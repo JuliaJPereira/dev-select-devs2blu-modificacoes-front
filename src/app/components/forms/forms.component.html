@@ -1,0 +1,262 @@
+<app-navbar></app-navbar>
+
+<div *ngIf="okInsert" class="container mt-3">
+  <div class="row">
+    <div class="alert alert-success" role="alert">
+      Candidato<b> {{ formPessoa.idPessoa }} - {{ formPessoa.nomePessoa }}</b>
+      cadastrado com sucesso!
+    </div>
+  </div>
+</div>
+
+<form class="container">
+  <div class="row">
+    <div class="col">
+
+       <div class="d-flex justify-content-center">
+        <h4 class="mt-4">Formulário de Candidatura</h4>
+       </div>
+
+      <!-- Campo do nome  -->
+      <div class="form-group col-12 mt-4">
+        <label for="exampleInputEmail1">Nome Completo</label>
+        <input
+          type="text"
+          class="form-control"
+          id="exampleInputEmail1"
+          aria-describedby="Nome Completo"
+          placeholder="Digite seu nome"
+          [(ngModel)]="formPessoa.nomePessoa"
+        />
+      </div>
+
+      <!-- Campo do E-mail -->
+      <div class="form-group col-12 mt-4">
+        <label for="exampleInputEmail1">E-mail</label>
+        <input
+          type="email"
+          class="form-control"
+          id="exampleInputEmail1"
+          aria-describedby="E-mail"
+          placeholder="nome@email.com.br"
+          [(ngModel)]="formPessoa.emailPessoa"
+        />
+      </div>
+
+      <!-- Campo do genero  -->
+      <div class="form-group col-12 mt-4">
+        <label for="exampleInputEmail1">Genero</label>
+        <select
+          class="form-control"
+          name="genero"
+          aria-describedby="Genero"
+          [(ngModel)]="formPessoa.generoPessoa"
+        >
+          <option value="">Masculino</option>
+          <option value="">Feminino</option>
+          <option value="">Não Binário</option>
+          <option value="">Prefiro não informar</option>
+        </select>
+      </div>
+
+      <!-- Campo do CPF e do RG  -->
+      <div class="form-group mt-4 col-12 row">
+        <div class="col-6">
+          <label for="exampleInputEmail1">CPF</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="cpf"
+            placeholder="000.000.000-00"
+            [(ngModel)]="formPessoa.cpfPessoa"
+          />
+        </div>
+        
+        <div class="col-6">
+          <label for="exampleInputEmail1">RG</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="rg"
+            placeholder="0.000.000"
+            [(ngModel)]="formPessoa.rgPessoa"
+          />
+        </div>
+      </div>
+
+      <!-- Campo da Idade e do Numero de Celular  -->
+      <div class="form-group mt-4 col-12 row">
+        <div class="col-6">
+          <label for="exampleInputEmail1">Idade</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Digite sua idade"
+            id="exampleInputIdade"
+            name="idadePessoa"
+            [(ngModel)]="formPessoa.idadePessoa"
+          />
+        </div>
+
+        <div class="col-6">
+          <label for="exampleInputEmail1">Celular</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="Celular"
+            placeholder="(00) 0 0000-0000"
+            [(ngModel)]="formPessoa.telefonePessoa"
+          />
+        </div>
+      </div>
+
+      <!-- Campo do CEP  -->
+      <div class="form-group col-12 mt-4 row">
+        <div class="col-6">
+          <label for="exampleInputEmail1">CEP</label>
+          <input
+            type="text"
+            class="form-control"
+            name="cep"
+            (blur)="getViaCEP($event)"
+            aria-describedby="CEP (00000-000)"
+            placeholder="0000-000"
+            [(ngModel)]="formPessoa.enderecoPessoa!.cepPessoa"
+          />
+          <a
+            class="busca-cep"
+            href="https://buscacepinter.correios.com.br/app/endereco/index.php"
+            target="_blank"
+            >Não sei meu CEP, como saber?</a
+          >
+        </div>
+
+        <!-- Aqui vai ter uma DIV que vai esconder o cidade também -->
+        <div class="col-6" *ngIf="showForm | async">
+          <label for="exampleInputEmail1">Estado / UF</label>
+          <input
+            type="text"
+            class="form-control"
+            name="uf"
+            aria-describedby="Estado"
+            placeholder="Santa Catarina"
+            [(ngModel)]="formPessoa.enderecoPessoa!.estadoPessoa"
+          />
+        </div>
+      </div>
+
+      <div *ngIf="showForm | async">
+        <div class="form-group mt-2 col-12 row">
+          <div class="col-9">
+            <label for="exampleInputEmail1">Endereço</label>
+            <input
+              type="text"
+              class="form-control"
+              name="logradouroPessoa"
+              aria-describedby="logradouroPessoa"
+              placeholder="Rua"
+              [(ngModel)]="formPessoa.enderecoPessoa!.logradouroPessoa"
+            />
+          </div>
+          <div class="col-3">
+            <label for="exampleInputEmail1">Numero</label>
+            <input
+              type="text"
+              class="form-control"
+              name="numeroPessoa"
+              aria-describedby="numero"
+              placeholder="Nº"
+              [(ngModel)]="formPessoa.enderecoPessoa!.numeroPessoa"
+            />
+          </div>
+        </div>
+
+        <!-- Cidade -->
+        <div class="form-group col-12 mt-4">
+          <label for="exampleInputEmail1">Cidade</label>
+          <input
+            type="email"
+            class="form-control"
+            name="cidade"
+            aria-describedby="Cidade"
+            placeholder="Blumenau"
+            [(ngModel)]="formPessoa.enderecoPessoa!.cidadePessoa"
+          />
+        </div>
+
+        <div class="form-group col-12 mt-4">
+          <label for="exampleInputEmail1">Bairro</label>
+          <input
+            type="email"
+            class="form-control"
+            name="bairro"
+            aria-describedby="Bairro"
+            placeholder="Digite seu bairro"
+            [(ngModel)]="formPessoa.enderecoPessoa!.bairroPessoa"
+          />
+        </div>
+
+        <!-- SKILLS -->
+        <div class="d-flex justify-content-center">
+          <div class="container">
+            <div class="row">
+              <div class="col mt-4">
+                <h4>Habilidades</h4>
+                <div class="container-soft-skills">
+                  <button
+                    type="button"
+                    *ngFor="let softSkill of arraySoftSkills"
+                    class="btn btn-skills {{
+                      this.getSoftSkillStyle(softSkill)
+                    }}"
+                    (click)="this.onClickSoftSkill(softSkill)"
+                  >
+                    {{ softSkill }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col mt-4">
+                <h4>Conhecimentos</h4>
+                <div class="container-soft-skills">
+                  <button
+                    type="button"
+                    *ngFor="let hardSkill of arrayHardSkills"
+                    class="btn btn-skills {{
+                      this.getHardSkillStyle(hardSkill)
+                    }}"
+                    (click)="this.onClickHardSkill(hardSkill)"
+                  >
+                    {{ hardSkill }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- botão  -->
+
+      <div class="col-lg-4 offset-lg-4 text-center mb-4 mt-5">
+        <div class="col-sm-10">
+          <button
+            (click)="addPessoa()"
+            type="submit"
+            class="btn btn-register mr-3"
+          >
+            Cadastre-se
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<app-footer></app-footer>
